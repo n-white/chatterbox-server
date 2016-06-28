@@ -12,6 +12,8 @@ this file and include it in basic-server.js so that it actually works.
 
 **************************************************************/
 
+var results = {results: []};
+
 module.exports = function(request, response) {
   // Request and Response come from node's http module.
   //
@@ -31,7 +33,7 @@ module.exports = function(request, response) {
 
 
   // The outgoing status.
-  var results = {results: []};
+
   var statusCode = 200;
 
   // See the note below about CORS headers.
@@ -44,17 +46,16 @@ module.exports = function(request, response) {
   
   if (request.method === 'GET') {
     statusCode = 200;
-    
   }
 
   if (request.method === 'POST') {
     statusCode = 201;
     request.on('data', function(chunk) {
-      console.log(chunk.toString());
+      // console.log(chunk.toString());
       chunkToString = chunk.toString();
       chunkToObj = JSON.parse(chunkToString);
       results.results.push(chunkToObj);
-      console.log(results);
+      // console.log(results);
     });
   }
 
@@ -73,6 +74,8 @@ module.exports = function(request, response) {
   //
   // Calling .end "flushes" the response's internal buffer, forcing
   // node to actually send all the data over to the client.
+
+  console.log(results);
   response.end(JSON.stringify(results));
 };
 
