@@ -59,6 +59,10 @@ module.exports = function(request, response) {
     });
   }
 
+  if (request.url !== '/classes/messages') {
+    statusCode = 404;
+  }
+
 
   headers['Content-Type'] = 'application/json';
 
