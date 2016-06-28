@@ -14,7 +14,7 @@ this file and include it in basic-server.js so that it actually works.
 
 var results = {results: []};
 
-module.exports = function(request, response) {
+exports.requestHandler = function(request, response) {
   // Request and Response come from node's http module.
   //
   // They include information about both the incoming request, such as
@@ -43,8 +43,10 @@ module.exports = function(request, response) {
   //
   // You will need to change this if you are sending something
   // other than plain text, like JSON or HTML.
+
+
   
-  if (request.method === 'GET') {
+  if (request.method === 'GET' && request.url === '/classes/messages') {
     statusCode = 200;
   }
 
@@ -79,7 +81,8 @@ module.exports = function(request, response) {
   // Calling .end "flushes" the response's internal buffer, forcing
   // node to actually send all the data over to the client.
 
-  console.log(results);
+  // console.log(request.method, request.url, response.statusCode);
+
   response.end(JSON.stringify(results));
 };
 
