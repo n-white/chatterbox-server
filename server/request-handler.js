@@ -29,15 +29,9 @@ module.exports = function(request, response) {
   // console.logs in your code.
   // console.log('Serving request type ' + request.method + ' for url ' + request.url);
 
-  if (request.method === 'GET') {
-
-  }
-
-  if (request.method === 'POST') {
-    
-  }
 
   // The outgoing status.
+  var results = {results: []};
   var statusCode = 200;
 
   // See the note below about CORS headers.
@@ -47,6 +41,24 @@ module.exports = function(request, response) {
   //
   // You will need to change this if you are sending something
   // other than plain text, like JSON or HTML.
+  
+  if (request.method === 'GET') {
+    statusCode = 200;
+    
+  }
+
+  if (request.method === 'POST') {
+    statusCode = 201;
+    request.on('data', function(chunk) {
+      console.log(chunk.toString());
+      chunkToString = chunk.toString();
+      chunkToObj = JSON.parse(chunkToString);
+      results.results.push(chunkToObj);
+      console.log(results);
+    });
+  }
+
+
   headers['Content-Type'] = 'application/json';
 
   // .writeHead() writes to the request line and headers of the response,
@@ -61,7 +73,7 @@ module.exports = function(request, response) {
   //
   // Calling .end "flushes" the response's internal buffer, forcing
   // node to actually send all the data over to the client.
-  response.end(JSON.stringify({results: []}));
+  response.end(JSON.stringify(results));
 };
 
 // These headers will allow Cross-Origin Resource Sharing (CORS).
